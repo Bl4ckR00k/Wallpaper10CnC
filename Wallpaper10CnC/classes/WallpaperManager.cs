@@ -9,22 +9,22 @@
 
     public class WallpaperManager
     {
-        private static int _imageWidth;
-        private static int _imageHeight;
-        private static pictureFormat _imageFormat;
+        private static int imageWidth;
+        private static int imageHeight;
+        private static PictureFormat imageFormat;
 
         public WallpaperManager()
         {
-            _imageWidth = 1920;
-            _imageHeight = 1080;
-            _imageFormat = pictureFormat.landscape;
+            imageWidth = 1920;
+            imageHeight = 1080;
+            imageFormat = PictureFormat.Landscape;
         }
 
-        public WallpaperManager(pictureFormat imageFormat, int width, int height)
+        public WallpaperManager(PictureFormat imageFormat, int width, int height)
         {
-            _imageWidth = width;
-            _imageHeight = height;
-            _imageFormat = imageFormat;
+            imageWidth = width;
+            imageHeight = height;
+            WallpaperManager.imageFormat = imageFormat;
         }
 
         public IEnumerable<Wallpaper> Compare(IEnumerable<Wallpaper> source, string targetPath)
@@ -46,43 +46,44 @@
             var sourcePictures = Directory.GetFiles(path).ToList();
             var source = new List<Wallpaper>();
 
-            foreach(var filepath in sourcePictures)
+            foreach (var filepath in sourcePictures)
             {
                 var file = new Wallpaper(filepath);
                 file.GetImageFormat(File.ReadAllBytes(filepath));
 
                 file.FileName = filepath.Split('\\').Last();
 
-                if (file.Extension != null) {
+                if (file.Extension != null)
+                {
                     source.Add(file);
                 }
             }
 
             var countComplete = source.Count;
 
-            var returnValue = new List<Wallpaper>();
+            List<Wallpaper> returnValue;
 
-            switch (_imageFormat)
+            switch (imageFormat)
             {
-                case pictureFormat.landscape:
+                case PictureFormat.Landscape:
                     returnValue = source
                                     .Where(p => Image.FromFile(p.Path).Width > Image.FromFile(p.Path).Height 
-                                             && Image.FromFile(p.Path).Width == _imageWidth)
+                                             && Image.FromFile(p.Path).Width == imageWidth)
                                     .ToList();
                     Console.WriteLine("Importiere nur Querformat-Wallpaper ({0}).", returnValue.Count);
                     return returnValue;
 
-                case pictureFormat.portrait:
+                case PictureFormat.Portrait:
                     returnValue = source
                                     .Where(p => Image.FromFile(p.Path).Width < Image.FromFile(p.Path).Height
-                                             && Image.FromFile(p.Path).Height == _imageHeight)
+                                             && Image.FromFile(p.Path).Height == imageHeight)
                                     .ToList();
                     Console.WriteLine("Importiere nur Hochformat-Wallpaper ({0}).", returnValue.Count);
                     return returnValue;
 
-                case pictureFormat.any:
+                case PictureFormat.Any:
                     returnValue = source
-                                    .Where(p => Image.FromFile(p.Path).Height == _imageHeight || Image.FromFile(p.Path).Height == _imageWidth)
+                                    .Where(p => Image.FromFile(p.Path).Height == imageHeight || Image.FromFile(p.Path).Height == imageWidth)
                                     .ToList();
                     Console.WriteLine("Importiere nur Wallpaper ({0}).", returnValue.Count);
                     return returnValue;
@@ -99,9 +100,9 @@
             {
                 using (var stream = File.OpenRead(file))
                 {
-                    var md5hash = md5.ComputeHash(stream);
+                    var md5Hash = md5.ComputeHash(stream);
 
-                    return BitConverter.ToString(md5hash).Replace("-", "").ToLower();
+                    return BitConverter.ToString(md5Hash).Replace("-", string.Empty).ToLower();
                 }
             }
         }
@@ -117,6 +118,5 @@
 
             public int GetHashCode(Wallpaper obj) => obj.HashCode.GetHashCode();
         }
-
     }
 }

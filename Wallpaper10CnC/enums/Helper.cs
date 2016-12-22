@@ -2,7 +2,6 @@
 {
     using System;
     using System.ComponentModel;
-    using System.Reflection;
 
     public static class Helper
     {
@@ -18,19 +17,20 @@
             return attribute == null ? null : arbitraryEnum.ToString();
         }
 
-
         private static T GetAttribute<T>(Enum arbitraryEnum) where T : class
         {
-            Type enumType = arbitraryEnum.GetType();
-            MemberInfo[] memberInfo = enumType.GetMember(arbitraryEnum.ToString());
+            var enumType = arbitraryEnum.GetType();
+            var memberInfo = enumType.GetMember(arbitraryEnum.ToString());
 
-            if (memberInfo.Length > 0)
+            if (memberInfo.Length <= 0)
             {
-                var attributes = memberInfo[0].GetCustomAttributes(typeof(T), false);
-                if (attributes.Length > 0)
-                {
-                    return (T)attributes[0];
-                }
+                return null;
+            }
+
+            var attributes = memberInfo[0].GetCustomAttributes(typeof(T), false);
+            if (attributes.Length > 0)
+            {
+                return (T)attributes[0];
             }
 
             return null;

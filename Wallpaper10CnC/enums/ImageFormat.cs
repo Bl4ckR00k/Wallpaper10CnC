@@ -5,16 +5,21 @@
     public enum ImageFormat
     {
         [Description(".bmp")]
-        bmp,
+        BMP,
+
         [Description(".jpg")]
-        jpeg,
+        JEPG,
+
         [Description(".gif")]
-        gif,
+        GIF,
+
         [Description(".tiff")]
-        tiff,
+        TIFF,
+
         [Description(".png")]
-        png,
+        PNG,
+
         [Description("")]
-        unknown
+        Unknown
     }
 }

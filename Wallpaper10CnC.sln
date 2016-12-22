@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wallpaper10CnC", "Wallpaper10CnC.csproj", "{19B58CCF-8EB7-4C03-95F3-00D51558F034}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wallpaper10CnC", "Wallpaper10CnC\Wallpaper10CnC.csproj", "{19B58CCF-8EB7-4C03-95F3-00D51558F034}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wallpaper10CnCTests", "..\Wallpaper10CnCTests\Wallpaper10CnCTests.csproj", "{D64D4430-156F-4B50-92CA-B1CB39F2B89B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wallpaper10CnCTests", "Wallpaper10CnCTests\Wallpaper10CnCTests.csproj", "{D64D4430-156F-4B50-92CA-B1CB39F2B89B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

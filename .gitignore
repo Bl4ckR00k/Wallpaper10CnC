@@ -5,3 +5,7 @@
 /.vs/Wallpaper10CnC/v14
 /bin/Debug
 /obj/Debug
+/Wallpaper10CnC/bin/Release
+/Wallpaper10CnC/obj/Release
+/Wallpaper10CnCTests/bin/Release
+/Wallpaper10CnCTests/obj/Release

@@ -2,18 +2,18 @@
 {
     using System.ComponentModel;
 
-    public enum pictureFormat
+    public enum PictureFormat
     {
         [Description("Alle Dateien")]
-        none,
+        None,
 
         [Description("Hoch- und Querformat")]
-        any,
+        Any,
 
         [Description("Hochformat")]
-        landscape,
+        Landscape,
 
         [Description("Querformat")]
-        portrait
+        Portrait
     }
 }
