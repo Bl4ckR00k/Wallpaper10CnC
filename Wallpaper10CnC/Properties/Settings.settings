@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Wallpaper10CnC.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Username" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">mietzner.m</Value>
+    </Setting>
+    <Setting Name="SourcePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\@@Username\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets</Value>
+    </Setting>
+    <Setting Name="TargetPath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\@@Username\OneDrive\Pictures\wallpaper\microsoft</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

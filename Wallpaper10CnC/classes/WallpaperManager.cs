@@ -29,11 +29,11 @@
 
         public IEnumerable<Wallpaper> Compare(IEnumerable<Wallpaper> source, string targetPath)
         {
-            var sourceHashs = source.Select(s => new Wallpaper(s.Path, s.FileName, GenerateHash(s.Path))).ToList();
+            var sourceHashs = source.Select(s => new Wallpaper(s.Path, s.FileName, GenerateHash(s.Path), s.Extension)).ToList();
 
             var targetHashs = GetFilesFormPath(targetPath).Select(s => new Wallpaper(s, string.Empty, GenerateHash(s))).ToList();
 
-            return sourceHashs.Except(targetHashs, new HashComparer());
+            return sourceHashs.Except(targetHashs, new HashComparer()).ToList();
         }
 
         public void Transfer(IEnumerable<Wallpaper> wallpapers, string targetPath)

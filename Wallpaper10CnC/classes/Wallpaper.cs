@@ -17,11 +17,17 @@
         {
         }
 
-        public Wallpaper(string path, string file, string hash)
+        public Wallpaper(string path, string file, string hash) 
+            : this(path, file, hash, null)
+        {
+        }
+
+        public Wallpaper(string path, string file, string hash, string extension)
         {
             this.Path = path;
             this.FileName = file;
             this.HashCode = hash;
+            this.Extension = extension;
         }
 
         public string Path { get; set; }

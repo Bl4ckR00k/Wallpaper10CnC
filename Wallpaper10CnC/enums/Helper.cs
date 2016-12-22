@@ -14,7 +14,7 @@
 
             var attribute = GetAttribute<DescriptionAttribute>(arbitraryEnum);
 
-            return attribute == null ? null : arbitraryEnum.ToString();
+            return attribute == null ? null : attribute.Description;
         }
 
         private static T GetAttribute<T>(Enum arbitraryEnum) where T : class

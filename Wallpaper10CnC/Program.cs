@@ -4,28 +4,41 @@
 
     public class Program
     {
-        private static string Username => @"<username>";
+        private static string username;
 
-        private static string SourcePath => @"C:\Users\" + Username + @"\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets";
+        private static string sourcePath;
 
-        private static string TargetPath => @"C:\Users\" + Username + @"\Pictures";
+        private static string targetPath;
 
         public static void Main(string[] args)
         {
-            var wpm = new WallpaperManager();
+            GetConfiguration();
+
             // var wpm = new WallpaperManager(PictureFormat.Landscape, 1920, 1080);
+            var wpm = new WallpaperManager();
 
             Console.WriteLine("Starte den Kopier und Vergleichsprozess.");
 
-            var source = wpm.GetSourcePictures(SourcePath);
-            var wallpapersToCopy = wpm.Compare(source, TargetPath);
+            var source = wpm.GetSourcePictures(sourcePath);
+            var wallpapersToCopy = wpm.Compare(source, targetPath);
 
-            wpm.Transfer(wallpapersToCopy, TargetPath);
-                        
+            wpm.Transfer(wallpapersToCopy, targetPath);
+
             Console.WriteLine("Kopiervorgang beendet");
 
             // TODO Doublettenprüfung für Zielordner
             Console.WriteLine("Doubletten entfernt");
+        }
+
+        private static void GetConfiguration()
+        {
+            username = Properties.Settings.Default.Username.ToString();
+
+            var source = Properties.Settings.Default.SourcePath.ToString();
+            sourcePath = source.Contains("@@") ? source.Replace("@@Username", username) : source;
+
+            var target = Properties.Settings.Default.TargetPath.ToString();
+            targetPath = target.Contains("@@") ? target.Replace("@@Username", username) : target;
         }
     }
 }
