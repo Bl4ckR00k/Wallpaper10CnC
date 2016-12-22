@@ -36,9 +36,9 @@
             return sourceHashs.Except(targetHashs, new HashComparer());
         }
 
-        public void Transfer(IEnumerable<Wallpaper> wallpapers, string targetPath, string extension)
+        public void Transfer(IEnumerable<Wallpaper> wallpapers, string targetPath)
         {
-            wallpapers.ToList().ForEach(p => File.Copy(p.Path, targetPath + "\\" + p.FileName + extension));
+            wallpapers.ToList().ForEach(p => File.Copy(p.Path, targetPath + "\\" + p.FileName + p.Extension));
         }
 
         public IEnumerable<Wallpaper> GetSourcePictures(string path)
