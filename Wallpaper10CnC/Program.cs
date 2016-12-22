@@ -13,6 +13,7 @@
         public static void Main(string[] args)
         {
             var wpm = new WallpaperManager();
+            // var wpm = new WallpaperManager(PictureFormat.Landscape, 1920, 1080);
 
             Console.WriteLine("Starte den Kopier und Vergleichsprozess.");
 
