@@ -1,6 +1,7 @@
 ﻿namespace Wallpaper10CnC
 {
     using System;
+    using System.Linq;
 
     public class Program
     {
@@ -26,7 +27,12 @@
 
             Console.WriteLine("Kopiervorgang beendet");
 
-            // TODO Doublettenprüfung für Zielordner
+            var doublettes = wpm.CompareEach(targetPath);
+
+            Console.WriteLine("Anzahl Doubletten: " + doublettes.Count());
+
+            wpm.DeleteWallpaperRange(doublettes);
+                       
             Console.WriteLine("Doubletten entfernt");
         }
 

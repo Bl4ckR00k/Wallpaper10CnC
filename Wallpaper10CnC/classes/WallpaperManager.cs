@@ -36,11 +36,37 @@
             return sourceHashs.Except(targetHashs, new HashComparer()).ToList();
         }
 
+        public IEnumerable<Wallpaper> CompareEach(string comparePath)
+        {
+            var compares = GetFilesFormPath(comparePath).Select(s => new Wallpaper(s, GetFileName(s), GenerateHash(s))).ToList();
+            List<Wallpaper> result = new List<Wallpaper>();
+
+            foreach(var paper in compares)
+            {
+                result.AddRange(compares.Where(w => w.HashCode == paper.HashCode && w.FileName != paper.FileName).Select( s => new Wallpaper(s.Path, s.FileName, s.HashCode)));
+            }
+
+            return result;
+        }
+
         public void Transfer(IEnumerable<Wallpaper> wallpapers, string targetPath)
         {
             wallpapers.ToList().ForEach(p => File.Copy(p.Path, targetPath + "\\" + p.FileName + p.Extension));
         }
 
+        public void DeleteWallpaperRange(IEnumerable<Wallpaper> wallpapers)
+        {
+            foreach (var paper in wallpapers)
+            {
+                DeleteWallpaper(paper);
+            }
+        }
+
+        public void DeleteWallpaper(Wallpaper wallpaper)
+        {
+            File.Delete(wallpaper.Path);
+        }
+        
         public IEnumerable<Wallpaper> GetSourcePictures(string path)
         {
             var sourcePictures = Directory.GetFiles(path).ToList();
@@ -105,6 +131,11 @@
                     return BitConverter.ToString(md5Hash).Replace("-", string.Empty).ToLower();
                 }
             }
+        }
+
+        private static string GetFileName(string Path)
+        {
+            return Path.Split('\\').Last();
         }
 
         private static string[] GetFilesFormPath(string path)
