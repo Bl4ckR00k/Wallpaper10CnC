@@ -31,7 +31,7 @@
 
             Console.WriteLine("Anzahl Doubletten: " + doublettes.Count());
 
-            // wpm.DeleteWallpaperRange(doublettes); -- Fehler!!
+            wpm.DeleteWallpaperRange(doublettes); 
                        
             Console.WriteLine("Doubletten entfernt");
         }

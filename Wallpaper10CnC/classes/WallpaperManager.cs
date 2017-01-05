@@ -43,7 +43,10 @@
 
             foreach(var paper in compares)
             {
-                result.AddRange(compares.Where(w => w.HashCode == paper.HashCode && w.FileName != paper.FileName).Select( s => new Wallpaper(s.Path, s.FileName, s.HashCode)));
+                if(!result.Any(p => p.FileName == paper.FileName))
+                {
+                    result.AddRange(compares.Where(w => w.HashCode == paper.HashCode && w.FileName != paper.FileName).Select(s => new Wallpaper(s.Path, s.FileName, s.HashCode)));
+                }
             }
 
             return result;

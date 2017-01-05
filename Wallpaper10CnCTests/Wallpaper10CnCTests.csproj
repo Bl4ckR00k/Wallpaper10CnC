@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CompareEachTest.cs" />
     <Compile Include="CompareTest.cs" />
     <Compile Include="GetSourcePicturesTest.cs" />
     <Compile Include="TransferTest.cs" />
@@ -62,6 +63,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Testfiles\compareEachTests\source\2d483a4b3e357d3305c6f4d99316d13c6dbe773466b36bf7e8226c80a8e0b885.png" />
+    <Content Include="Testfiles\compareEachTests\source\2db6f3552fda5f5f9009f409e54923c0e9d1561070758bd81272293ad69dd123.png" />
+    <Content Include="Testfiles\compareEachTests\source\2db6f3552fda5f5f9009f409e54923c0e9d1561070758bd81272293ad69dd124.png" />
+    <Content Include="Testfiles\compareEachTests\source\60ecfce0af8371c7f3fe030f3c1d040605aaa18e2b44de65c7e09c82aee765d3.png" />
     <Content Include="Testfiles\compareTests\source\0d11203a61a0ef68f7de1c72ae60c9d5c2f7f1dab42fb3f0521e952751a1ca41.png" />
     <Content Include="Testfiles\compareTests\source\2d483a4b3e357d3305c6f4d99316d13c6dbe773466b36bf7e8226c80a8e0b885.png" />
     <Content Include="Testfiles\compareTests\source\2db6f3552fda5f5f9009f409e54923c0e9d1561070758bd81272293ad69dd123.png" />
@@ -77,6 +82,7 @@
     <Content Include="Testfiles\transferTests\source\60ecfce0af8371c7f3fe030f3c1d040605aaa18e2b44de65c7e09c82aee765d3.png" />
     <Content Include="Testfiles\transferTests\target\neues Bild.png" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
