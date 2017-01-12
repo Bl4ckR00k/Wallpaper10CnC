@@ -48,7 +48,8 @@
                                   new Tuple<ImageFormat, byte[]>(ImageFormat.TIFF, new byte[] { 73, 73, 42 }),
                                   new Tuple<ImageFormat, byte[]>(ImageFormat.TIFF, new byte[] { 77, 77, 42 }),
                                   new Tuple<ImageFormat, byte[]>(ImageFormat.JEPG, new byte[] { 255, 216, 255, 224 }),
-                                  new Tuple<ImageFormat, byte[]>(ImageFormat.JEPG, new byte[] { 255, 216, 255, 225 })
+                                  new Tuple<ImageFormat, byte[]>(ImageFormat.JEPG, new byte[] { 255, 216, 255, 225 }),
+                                  new Tuple<ImageFormat, byte[]>(ImageFormat.JEPG, new byte[] { 255, 216, 255, 219 })
                               };
 
             foreach (var format in formate)
