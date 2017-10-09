@@ -54,7 +54,19 @@
 
         public void Transfer(IEnumerable<Wallpaper> wallpapers, string targetPath)
         {
-            wallpapers.ToList().ForEach(p => File.Copy(p.Path, targetPath + "\\" + p.FileName + p.Extension));
+            foreach (var p in wallpapers)
+            {
+                try
+                {
+                    File.Copy(p.Path, targetPath + "\\" + p.FileName + p.Extension);
+                }
+                catch (FileNotFoundException)
+                {
+                    // tritt sporadisch auf, wenn die Aktualisierung des Microsoft-Ordners noch 
+                    // nicht abgeschlossen, das Programm aber bereits in der Ausführung ist.
+                    continue;
+                }
+            }
         }
 
         public void DeleteWallpaperRange(IEnumerable<Wallpaper> wallpapers)
