@@ -32,7 +32,7 @@
             Directory.CreateDirectory(transferTarget);
             try
             {
-                wpm.Transfer(result, transferTarget);
+                wpm.CopyWallpapersToTarget(result, transferTarget);
 
                 var transfers = Directory.GetFiles(transferTarget);
 

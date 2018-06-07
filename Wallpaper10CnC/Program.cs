@@ -1,7 +1,6 @@
 ﻿namespace Wallpaper10CnC
 {
     using System;
-    using System.Linq;
 
     public class Program
     {
@@ -22,18 +21,14 @@
 
             var source = wpm.GetSourcePictures(sourcePath);
             var wallpapersToCopy = wpm.Compare(source, targetPath);
-
-            wpm.Transfer(wallpapersToCopy, targetPath);
-
-            Console.WriteLine("Kopiervorgang beendet");
+            wpm.CopyWallpapersToTarget(wallpapersToCopy, targetPath);
 
             var doublettes = wpm.CompareEach(targetPath);
+            wpm.DeleteDoubleWallpapers(doublettes); 
 
-            Console.WriteLine("Anzahl Doubletten: " + doublettes.Count());
-
-            wpm.DeleteWallpaperRange(doublettes); 
-                       
-            Console.WriteLine("Doubletten entfernt");
+            System.Threading.Thread.Sleep(1000);
+            Console.WriteLine("Programm wird beendet.");
+            System.Threading.Thread.Sleep(1000);
         }
 
         private static void GetConfiguration()

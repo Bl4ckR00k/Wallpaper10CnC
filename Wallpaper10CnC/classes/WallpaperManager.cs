@@ -52,7 +52,7 @@
             return result;
         }
 
-        public void Transfer(IEnumerable<Wallpaper> wallpapers, string targetPath)
+        public void CopyWallpapersToTarget(IEnumerable<Wallpaper> wallpapers, string targetPath)
         {
             foreach (var p in wallpapers)
             {
@@ -67,14 +67,18 @@
                     continue;
                 }
             }
+
+            Console.WriteLine("Importierte Wallpapers: {0}", wallpapers.Count());
         }
 
-        public void DeleteWallpaperRange(IEnumerable<Wallpaper> wallpapers)
+        public void DeleteDoubleWallpapers(IEnumerable<Wallpaper> wallpapers)
         {
             foreach (var paper in wallpapers)
             {
                 DeleteWallpaper(paper);
             }
+            
+            Console.WriteLine("Anzahl Doubletten: " + wallpapers.Count());
         }
 
         public void DeleteWallpaper(Wallpaper wallpaper)
@@ -111,7 +115,7 @@
                                     .Where(p => Image.FromFile(p.Path).Width > Image.FromFile(p.Path).Height 
                                              && Image.FromFile(p.Path).Width == imageWidth)
                                     .ToList();
-                    Console.WriteLine("Importiere nur Querformat-Wallpaper ({0}).", returnValue.Count);
+                    Console.WriteLine("Gefundene Querformat-Wallpapers: {0}", returnValue.Count);
                     return returnValue;
 
                 case PictureFormat.Portrait:
@@ -119,18 +123,18 @@
                                     .Where(p => Image.FromFile(p.Path).Width < Image.FromFile(p.Path).Height
                                              && Image.FromFile(p.Path).Height == imageHeight)
                                     .ToList();
-                    Console.WriteLine("Importiere nur Hochformat-Wallpaper ({0}).", returnValue.Count);
+                    Console.WriteLine("Gefundene Hochformat-Wallpapers: {0}", returnValue.Count);
                     return returnValue;
 
                 case PictureFormat.Any:
                     returnValue = source
                                     .Where(p => Image.FromFile(p.Path).Height == imageHeight || Image.FromFile(p.Path).Height == imageWidth)
                                     .ToList();
-                    Console.WriteLine("Importiere nur Wallpaper ({0}).", returnValue.Count);
+                    Console.WriteLine("Gefundene Wallpapers: {0}", returnValue.Count);
                     return returnValue;
 
                 default:
-                    Console.WriteLine("Importiere alle Bilder ({0}).", countComplete);
+                    Console.WriteLine("Gefundene Bilddateien: {0}", countComplete);
                     return source.ToList();
             }
         }
