@@ -1,4 +1,4 @@
-﻿namespace Wallpaper10CnC
+﻿namespace Wallpaper10CnC.classes
 {
     using System;
     using System.Collections.Generic;
@@ -12,33 +12,28 @@
         {
         }
 
-        public Wallpaper(string path, string file)
+        private Wallpaper(string path, string file)
             : this(path, file, string.Empty)
         {
         }
 
-        public Wallpaper(string path, string file, string hash) 
-            : this(path, file, hash, null)
+        public Wallpaper(string path, string file, string hash, string extension = null)
         {
+            Path = path;
+            FileName = file;
+            HashCode = hash;
+            Extension = extension;
         }
 
-        public Wallpaper(string path, string file, string hash, string extension)
-        {
-            this.Path = path;
-            this.FileName = file;
-            this.HashCode = hash;
-            this.Extension = extension;
-        }
+        public string Path { get; }
 
-        public string Path { get; set; }
-
-        public string HashCode { get; set; }
+        public string HashCode { get; }
 
         public string FileName { get; set; }
 
-        public string Extension { get; set; }
+        public string Extension { get; private set; }
 
-        public ImageFormat GetImageFormat(byte[] bytes)
+        public void GetImageFormat(byte[] bytes)
         {
             var formate = new List<Tuple<ImageFormat, byte[]>>
                               {
@@ -59,11 +54,9 @@
                     continue;
                 }
 
-                this.Extension = format.Item1.GetDescription();
-                return format.Item1;
+                Extension = format.Item1.GetDescription();
+                return;
             }
-
-            return ImageFormat.Unknown;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Wallpaper10CnC
+﻿namespace Wallpaper10CnC.classes
 {
     using System;
     using System.Collections.Generic;
@@ -7,27 +7,20 @@
     using System.Linq;
     using System.Security.Cryptography;
 
-    public class WallpaperManager
+    public static class WallpaperManager
     {
-        private static int imageWidth;
-        private static int imageHeight;
-        private static PictureFormat imageFormat;
+        private static int _imageWidth = 1920;
+        private static int _imageHeight = 1080;
+        private static PictureFormat _imageFormat = PictureFormat.Landscape;
 
-        public WallpaperManager()
+        public static void Initialize(PictureFormat imageFormat, int imageWidth, int imageHeight)
         {
-            imageWidth = 1920;
-            imageHeight = 1080;
-            imageFormat = PictureFormat.Landscape;
+            _imageFormat = imageFormat;
+            _imageWidth = imageWidth;
+            _imageHeight = imageHeight;
         }
 
-        public WallpaperManager(PictureFormat imageFormat, int width, int height)
-        {
-            imageWidth = width;
-            imageHeight = height;
-            WallpaperManager.imageFormat = imageFormat;
-        }
-
-        public IEnumerable<Wallpaper> Compare(IEnumerable<Wallpaper> source, string targetPath)
+        public static List<Wallpaper> Compare(IEnumerable<Wallpaper> source, string targetPath)
         {
             var sourceHashs = source.Select(s => new Wallpaper(s.Path, s.FileName, GenerateHash(s.Path), s.Extension)).ToList();
 
@@ -36,14 +29,14 @@
             return sourceHashs.Except(targetHashs, new HashComparer()).ToList();
         }
 
-        public IEnumerable<Wallpaper> CompareEach(string comparePath)
+        public static List<Wallpaper> CompareEach(string comparePath)
         {
             var compares = GetFilesFormPath(comparePath).Select(s => new Wallpaper(s, GetFileName(s), GenerateHash(s))).ToList();
-            List<Wallpaper> result = new List<Wallpaper>();
+            var result = new List<Wallpaper>();
 
             foreach(var paper in compares)
             {
-                if(!result.Any(p => p.FileName == paper.FileName))
+                if(result.All(p => p.FileName != paper.FileName))
                 {
                     result.AddRange(compares.Where(w => w.HashCode == paper.HashCode && w.FileName != paper.FileName).Select(s => new Wallpaper(s.Path, s.FileName, s.HashCode)));
                 }
@@ -52,7 +45,7 @@
             return result;
         }
 
-        public void CopyWallpapersToTarget(IEnumerable<Wallpaper> wallpapers, string targetPath)
+        public static void CopyWallpapersToTarget(List<Wallpaper> wallpapers, string targetPath)
         {
             foreach (var p in wallpapers)
             {
@@ -64,29 +57,28 @@
                 {
                     // tritt sporadisch auf, wenn die Aktualisierung des Microsoft-Ordners noch 
                     // nicht abgeschlossen, das Programm aber bereits in der Ausführung ist.
-                    continue;
                 }
             }
 
-            Console.WriteLine("Importierte Wallpapers: {0}", wallpapers.Count());
+            Console.WriteLine("Importierte Wallpapers: {0}", wallpapers.Count);
         }
 
-        public void DeleteDoubleWallpapers(IEnumerable<Wallpaper> wallpapers)
+        public static void DeleteDoubleWallpapers(List<Wallpaper> wallpapers)
         {
             foreach (var paper in wallpapers)
             {
                 DeleteWallpaper(paper);
             }
             
-            Console.WriteLine("Anzahl Doubletten: " + wallpapers.Count());
+            Console.WriteLine("Anzahl Doubletten: " + wallpapers.Count);
         }
 
-        public void DeleteWallpaper(Wallpaper wallpaper)
+        private static void DeleteWallpaper(Wallpaper wallpaper)
         {
             File.Delete(wallpaper.Path);
         }
         
-        public IEnumerable<Wallpaper> GetSourcePictures(string path)
+        public static IEnumerable<Wallpaper> GetSourcePictures(string path)
         {
             var sourcePictures = Directory.GetFiles(path).ToList();
             var source = new List<Wallpaper>();
@@ -94,13 +86,21 @@
             foreach (var filepath in sourcePictures)
             {
                 var file = new Wallpaper(filepath);
-                file.GetImageFormat(File.ReadAllBytes(filepath));
-
-                file.FileName = filepath.Split('\\').Last();
-
-                if (file.Extension != null)
+                try
                 {
-                    source.Add(file);
+
+                    file.GetImageFormat(File.ReadAllBytes(filepath));
+
+                    file.FileName = filepath.Split('\\').Last();
+
+                    if (file.Extension != null)
+                    {
+                        source.Add(file);
+                    }
+                }
+                catch (IOException)
+                {
+                    Console.WriteLine($"Auf das Bild '{filepath}' konnte nicht zugegriffen werden.");
                 }
             }
 
@@ -108,12 +108,12 @@
 
             List<Wallpaper> returnValue;
 
-            switch (imageFormat)
+            switch (_imageFormat)
             {
                 case PictureFormat.Landscape:
                     returnValue = source
                                     .Where(p => Image.FromFile(p.Path).Width > Image.FromFile(p.Path).Height 
-                                             && Image.FromFile(p.Path).Width == imageWidth)
+                                             && Image.FromFile(p.Path).Width == _imageWidth)
                                     .ToList();
                     Console.WriteLine("Gefundene Querformat-Wallpapers: {0}", returnValue.Count);
                     return returnValue;
@@ -121,14 +121,15 @@
                 case PictureFormat.Portrait:
                     returnValue = source
                                     .Where(p => Image.FromFile(p.Path).Width < Image.FromFile(p.Path).Height
-                                             && Image.FromFile(p.Path).Height == imageHeight)
+                                             && Image.FromFile(p.Path).Height == _imageHeight)
                                     .ToList();
                     Console.WriteLine("Gefundene Hochformat-Wallpapers: {0}", returnValue.Count);
                     return returnValue;
 
                 case PictureFormat.Any:
                     returnValue = source
-                                    .Where(p => Image.FromFile(p.Path).Height == imageHeight || Image.FromFile(p.Path).Height == imageWidth)
+                                    .Where(p => Image.FromFile(p.Path).Height == _imageHeight 
+                                             || Image.FromFile(p.Path).Height == _imageWidth)
                                     .ToList();
                     Console.WriteLine("Gefundene Wallpapers: {0}", returnValue.Count);
                     return returnValue;
@@ -152,19 +153,19 @@
             }
         }
 
-        private static string GetFileName(string Path)
+        private static string GetFileName(string path)
         {
-            return Path.Split('\\').Last();
+            return path.Split('\\').Last();
         }
 
-        private static string[] GetFilesFormPath(string path)
+        private static IEnumerable<string> GetFilesFormPath(string path)
         {
             return !Directory.Exists(path) ? null : Directory.GetFiles(path);
         }
 
         private class HashComparer : IEqualityComparer<Wallpaper>
         {
-            public bool Equals(Wallpaper x, Wallpaper y) => x.HashCode == y.HashCode;
+            public bool Equals(Wallpaper x, Wallpaper y) => y != null && (x != null && x.HashCode == y.HashCode);
 
             public int GetHashCode(Wallpaper obj) => obj.HashCode.GetHashCode();
         }
